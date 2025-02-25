@@ -1,37 +1,5 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { TiLocationArrow } from "react-icons/ti";
-
-// مكون Lazy Video لتحميل الفيديو عند ظهوره
-const LazyVideo = ({ src, className }) => {
-  const videoRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect(); // إيقاف المراقبة بعد التحميل
-        }
-      },
-      { threshold: 0.3 }
-    );
-
-    if (videoRef.current) observer.observe(videoRef.current);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <video
-      ref={videoRef}
-      src={isVisible ? src : ""}
-      loop
-      muted
-      autoPlay={isVisible}
-      className={className}
-    />
-  );
-};
 
 export const BentoTilt = ({ children, className = "" }) => {
   const [transformStyle, setTransformStyle] = useState("");
@@ -90,8 +58,11 @@ export const BentoCard = ({ src, title, description, isComingSoon }) => {
 
   return (
     <div className="relative size-full">
-      <LazyVideo
+      <video
         src={src}
+        loop
+        muted
+        autoPlay
         className="absolute left-0 top-0 size-full object-cover object-center"
       />
       <div className="relative z-10 flex size-full flex-col justify-between p-5 text-blue-50">
@@ -110,7 +81,7 @@ export const BentoCard = ({ src, title, description, isComingSoon }) => {
             onMouseLeave={handleMouseLeave}
             className="border-hsla relative flex w-fit cursor-pointer items-center gap-1 overflow-hidden rounded-full bg-black px-5 py-2 text-xs uppercase text-white/20"
           >
-            {/* تأثير Hover */}  
+            {/* Radial gradient hover effect */}
             <div
               className="pointer-events-none absolute -inset-px opacity-0 transition duration-300"
               style={{
@@ -205,7 +176,13 @@ const Features = () => (
         </BentoTilt>
 
         <BentoTilt className="bento-tilt_2">
-          <LazyVideo src="videos/feature-5.mp4" className="size-full object-cover object-center" />
+          <video
+            src="videos/feature-5.mp4"
+            loop
+            muted
+            autoPlay
+            className="size-full object-cover object-center"
+          />
         </BentoTilt>
       </div>
     </div>
